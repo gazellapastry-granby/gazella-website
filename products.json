@@ -1,0 +1,72 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Tiramisu",
+      "description": "Un classique italien revisité, fondant et parfumé au café.",
+      "image": "product3.jpg",
+      "category": "Desserts italiens",
+      "price": 25.0,
+      "servings": 6,
+      "allergens": ["œufs", "lait", "gluten"],
+      "available": true
+    },
+    {
+      "id": 2,
+      "name": "Tiramisu Pistache",
+      "description": "Un tiramisu onctueux à la pistache, subtil et gourmand.",
+      "image": "product3.jpg",
+      "category": "Desserts italiens",
+      "price": 28.0,
+      "servings": 6,
+      "allergens": ["œufs", "lait", "fruits à coque", "gluten"],
+      "available": true
+    },
+    {
+      "id": 3,
+      "name": "Tiramisu Chocolat",
+      "description": "Une explosion de cacao pour les amoureux du chocolat.",
+      "image": "product3.jpg",
+      "category": "Desserts italiens",
+      "price": 28.0,
+      "servings": 6,
+      "allergens": ["œufs", "lait", "gluten"],
+      "available": true
+    },
+    {
+      "id": 4,
+      "name": "Box Mini-Brownies",
+      "description": "De petits carrés moelleux au chocolat, à partager sans modération.",
+      "image": "brownies.jpg",
+      "category": "Box & Assortiments",
+      "price": 20.0,
+      "quantity": 12,
+      "allergens": ["œufs", "lait", "gluten", "fruits à coque"],
+      "available": true
+    },
+    {
+      "id": 5,
+      "name": "Cheesecake",
+      "description": "Une sélection de cheesecakes aux saveurs variées et crémeuses.",
+      "image": "product1.jpg",
+      "category": "Gâteaux américains",
+      "price": 30.0,
+      "servings": 8,
+      "variants": ["Nature", "Fruits rouges", "Caramel", "Chocolat"],
+      "allergens": ["œufs", "lait", "gluten"],
+      "available": true
+    },
+    {
+      "id": 6,
+      "name": "Cookies",
+      "description": "Des cookies dorés, croustillants à l'extérieur et fondants à l'intérieur.",
+      "image": "product2.jpg",
+      "category": "Biscuits",
+      "price": 15.0,
+      "quantity": 8,
+      "variants": ["Chocolat", "Double chocolat", "Chocolat blanc & macadamia"],
+      "allergens": ["œufs", "lait", "gluten", "fruits à coque"],
+      "available": true
+    }
+  ]
+}

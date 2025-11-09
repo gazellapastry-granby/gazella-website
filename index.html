@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gazella | Ton instant sucré</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Poppins:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --rose-pale: #f6f2ef;
+        --rose: #f5c6cc;
+        --peche: #f5bdab;
+        --text: #3a2f2f;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        background-color: var(--rose-pale);
+        color: var(--text);
+        scroll-behavior: smooth;
+      }
+
+      header {
+        background-color: var(--rose);
+        padding: 0.5rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      header img {
+        height: 80px; /* Logo plus grand */
+      }
+
+      nav a {
+        margin: 0 1rem;
+        text-decoration: none;
+        color: var(--text);
+        font-weight: 500;
+        transition: 0.3s;
+      }
+
+      nav a:hover {
+        color: white;
+      }
+
+      .hero {
+        text-align: center;
+        padding: 6rem 2rem;
+        background: linear-gradient(
+            rgba(245, 198, 204, 0.8),
+            rgba(246, 242, 239, 0.8)
+          ),
+          url("cover.jpg");
+        background-size: auto;
+        background-position: center;
+        position: relative;
+        animation: fadeIn 2s ease-in-out;
+      }
+
+      /* Cibler spécifiquement l'image du hero pour l'animation de scroll */
+      .hero-logo {
+        width: 300px; /* Taille initiale */
+        margin-bottom: 1.5rem;
+        animation: fadeIn 2s ease-in-out;
+        transition: width 0.3s ease-out, opacity 0.3s ease-out; /* Ajout d'une transition pour un mouvement fluide */
+      }
+
+      .hero h2 {
+        font-size: 2.5rem;
+        font-family: "Playfair Display", serif;
+        margin-bottom: 1rem;
+      }
+
+      .hero p {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+      }
+
+      .hero button {
+        background-color: var(--peche);
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-size: 1rem;
+        cursor: pointer;
+        color: white;
+        transition: 0.3s;
+      }
+
+      .hero button:hover {
+        background-color: var(--rose);
+      }
+
+      .products {
+        text-align: center;
+        padding: 4rem 2rem;
+      }
+
+      .products h3 {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+        font-family: "Playfair Display", serif;
+      }
+
+      .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        max-width: 1000px;
+        margin: auto;
+      }
+
+      .product {
+        background-color: white;
+        border-radius: 20px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+      }
+
+      .product:hover {
+        transform: translateY(-5px);
+      }
+
+      .product img {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        border-radius: 15px;
+        margin-bottom: 1rem;
+      }
+
+      .product h4 {
+        margin-bottom: 0.5rem;
+        font-size: 1.2rem;
+      }
+
+      .price {
+        font-weight: 500;
+        color: var(--peche);
+        margin-top: 0.5rem;
+      }
+
+      .unavailable {
+        color: #ff4444;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+      }
+
+      .contact {
+        background-color: var(--peche);
+        color: white;
+        padding: 4rem 2rem;
+        text-align: center;
+      }
+
+      .contact h3 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        font-family: "Playfair Display", serif;
+      }
+
+      .contact p {
+        margin-bottom: 2rem;
+        font-size: 1rem;
+      }
+
+      form {
+        max-width: 500px;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      input,
+      textarea,
+      select {
+        padding: 1rem;
+        border-radius: 10px;
+        border: none;
+        font-size: 1rem;
+        outline: none;
+        background-color: white; /* Pour les selects */
+        color: var(--text);
+      }
+
+      /* Styles spécifiques pour le sélecteur de produit et la quantité */
+      .product-selector-group {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap; /* Permet un retour à la ligne sur petits écrans */
+      }
+
+      .product-selector-group select {
+        flex-grow: 1;
+        min-width: 150px; /* Assure une largeur minimale */
+      }
+
+      .product-selector-group input[type="number"] {
+        width: 80px; /* Ajuster la largeur de l'input quantité */
+        text-align: center;
+        -moz-appearance: textfield; /* Cache les flèches sur Firefox */
+      }
+
+      .product-selector-group input[type="number"]::-webkit-outer-spin-button,
+      .product-selector-group input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none; /* Cache les flèches sur Chrome/Safari */
+        margin: 0;
+      }
+
+      .add-product-btn {
+        background-color: var(--rose);
+        border: none;
+        padding: 0.8rem 1.2rem;
+        border-radius: 50px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        color: white;
+        transition: 0.3s;
+        flex-shrink: 0; /* Empêche le bouton de rétrécir */
+      }
+
+      .add-product-btn:hover {
+        background-color: var(--rose-pale);
+        color: var(--text);
+      }
+
+      #selected-products-summary {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        padding: 1rem;
+        text-align: left;
+        color: var(--text);
+        font-size: 0.9rem;
+        min-height: 50px; /* Assure une hauteur minimale */
+      }
+
+      #selected-products-summary p {
+        margin-bottom: 0.3rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      #selected-products-summary p:last-child {
+        margin-bottom: 0;
+      }
+
+      .remove-product-btn {
+        background: none;
+        border: none;
+        color: #ff4444;
+        cursor: pointer;
+        font-size: 1rem;
+        margin-left: 10px;
+      }
+
+
+      button[type="submit"] {
+        background-color: var(--rose);
+        border: none;
+        padding: 1rem;
+        border-radius: 50px;
+        font-size: 1rem;
+        cursor: pointer;
+        color: white;
+        transition: 0.3s;
+      }
+
+      button[type="submit"]:hover {
+        background-color: var(--rose-pale);
+        color: var(--text);
+      }
+
+      /* Styles pour les boutons de réseaux sociaux */
+      .social-buttons {
+        display: flex;
+        justify-content: center; /* Centre les boutons */
+        gap: 1.5rem; /* Espace entre les boutons */
+        margin-top: 2rem; /* Espace au-dessus des boutons */
+        flex-wrap: wrap; /* Permet aux boutons de passer à la ligne sur petits écrans */
+      }
+
+      .social-buttons a {
+        display: inline-flex; /* Permet d'aligner l'icône et le texte */
+        align-items: center; /* Centre verticalement */
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+      }
+
+      .social-buttons a:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .whatsapp {
+        background-color: #25d366; /* Couleur WhatsApp */
+      }
+
+      .instagram {
+        /* Gradient Instagram */
+        background-image: linear-gradient(
+          45deg,
+          #feda75,
+          #fa7e1e,
+          #d62976,
+          #962fbf,
+          #4f5bd5
+        );
+      }
+
+      footer {
+        background-color: var(--rose);
+        text-align: center;
+        padding: 1rem;
+        font-size: 0.9rem;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <img src="Gazella_Logo.png" alt="Logo Gazella" />
+      <nav>
+        <a href="#produits">Produits</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <img src="Gazella_Logo.png" alt="Logo Gazella" class="hero-logo" />
+      <h2>Ton instant sucré</h2>
+      <p>
+        Des gâteaux faits maison avec passion et des saveurs qui font fondre le
+        cœur.
+      </p>
+      <button
+        onclick="document.getElementById('produits').scrollIntoView({behavior:'smooth'})"
+      >
+        Découvrir nos douceurs
+      </button>
+    </section>
+
+    <section id="produits" class="products">
+      <h3>Nos gourmandises</h3>
+      <div id="product-grid" class="product-grid">
+        <!-- Products will be loaded here dynamically -->
+      </div>
+    </section>
+
+    <script>
+      const productData = {
+        "products": [
+          {
+            "id": 1,
+            "name": "Tiramisu",
+            "description": "Un classique italien revisité, fondant et parfumé au café.",
+            "image": "product3.jpg",
+            "category": "Desserts italiens",
+            "price": 25.0,
+            "servings": 6,
+            "allergens": ["œufs", "lait", "gluten"],
+            "available": true
+          },
+          {
+            "id": 2,
+            "name": "Tiramisu Pistache",
+            "description": "Un tiramisu onctueux à la pistache, subtil et gourmand.",
+            "image": "product5.jpg",
+            "category": "Desserts italiens",
+            "price": 28.0,
+            "servings": 6,
+            "allergens": ["œufs", "lait", "fruits à coque", "gluten"],
+            "available": true
+          },
+          {
+            "id": 3,
+            "name": "Tiramisu Chocolat",
+            "description": "Une explosion de cacao pour les amoureux du chocolat.",
+            "image": "product6.jpg",
+            "category": "Desserts italiens",
+            "price": 28.0,
+            "servings": 6,
+            "allergens": ["œufs", "lait", "gluten"],
+            "available": true
+          },
+          {
+            "id": 4,
+            "name": "Box Mini-Brownies",
+            "description": "De petits carrés moelleux au chocolat, à partager sans modération.",
+            "image": "brownies.jpg",
+            "category": "Box & Assortiments",
+            "price": 20.0,
+            "quantity": 12,
+            "allergens": ["œufs", "lait", "gluten", "fruits à coque"],
+            "available": true
+          },
+          {
+            "id": 5,
+            "name": "Cheesecake",
+            "description": "Une sélection de cheesecakes aux saveurs variées et crémeuses.",
+            "image": "product1.jpg",
+            "category": "Gâteaux américains",
+            "price": 30.0,
+            "servings": 8,
+            "variants": ["Nature", "Fruits rouges", "Caramel", "Chocolat"],
+            "allergens": ["œufs", "lait", "gluten"],
+            "available": true
+          },
+          {
+            "id": 6,
+            "name": "Cookies",
+            "description": "Des cookies dorés, croustillants à l'extérieur et fondants à l'intérieur.",
+            "image": "product2.jpg",
+            "category": "Biscuits",
+            "price": 15.0,
+            "quantity": 8,
+            "variants": ["Chocolat", "Double chocolat", "Chocolat blanc & macadamia"],
+            "allergens": ["œufs", "lait", "gluten", "fruits à coque"],
+            "available": true
+          }
+        ]
+      };
+
+      // Function to load and display products
+      function loadProducts() {
+        const productGrid = document.getElementById("product-grid");
+
+        productData.products.forEach((product) => {
+          const productElement = document.createElement("div");
+          productElement.className = "product";
+
+          productElement.innerHTML = `
+            <img src="${product.image}" alt="${product.name}" />
+            <h4>${product.name}</h4>
+            <p>${product.description}</p>
+            <p class="price">${product.price.toFixed(2)} €</p>
+            ${
+              product.available
+                ? ""
+                : '<p class="unavailable">Indisponible</p>'
+            }
+          `;
+
+          productGrid.appendChild(productElement);
+        });
+      }
+
+      let selectedOrder = []; // Tableau pour stocker les produits sélectionnés
+
+      function populateProductSelector() {
+        const productSelect = document.getElementById("product-select");
+        productSelect.innerHTML = '<option value="">-- Choisir un produit --</option>'; // Option par défaut
+
+        productData.products.forEach(product => {
+          if (product.available) {
+            const option = document.createElement("option");
+            option.value = product.id;
+            option.textContent = `${product.name} (${product.price.toFixed(2)}€)`;
+            productSelect.appendChild(option);
+          }
+        });
+      }
+
+      function addProductToOrder() {
+        const productSelect = document.getElementById("product-select");
+        const quantityInput = document.getElementById("product-quantity");
+        const selectedProductId = parseInt(productSelect.value);
+        const quantity = parseInt(quantityInput.value);
+
+        if (!selectedProductId || quantity <= 0 || isNaN(quantity)) {
+          alert("Veuillez sélectionner un produit et entrer une quantité valide.");
+          return;
+        }
+
+        const product = productData.products.find(p => p.id === selectedProductId);
+
+        if (product) {
+          // Vérifier si le produit est déjà dans la commande
+          const existingItemIndex = selectedOrder.findIndex(item => item.id === product.id);
+
+          if (existingItemIndex > -1) {
+            // Si oui, mettre à jour la quantité
+            selectedOrder[existingItemIndex].quantity += quantity;
+          } else {
+            // Sinon, ajouter le nouveau produit
+            selectedOrder.push({
+              id: product.id,
+              name: product.name,
+              price: product.price,
+              quantity: quantity
+            });
+          }
+
+          renderOrderSummary();
+          // Réinitialiser le sélecteur et la quantité après ajout
+          productSelect.value = "";
+          quantityInput.value = 1;
+        }
+      }
+
+      function removeProductFromOrder(productId) {
+        selectedOrder = selectedOrder.filter(item => item.id !== productId);
+        renderOrderSummary();
+      }
+
+      function renderOrderSummary() {
+        const summaryDiv = document.getElementById("selected-products-summary");
+        summaryDiv.innerHTML = ""; // Vide le contenu actuel
+
+        if (selectedOrder.length === 0) {
+          summaryDiv.innerHTML = "<p>Aucun produit sélectionné.</p>";
+          return;
+        }
+
+        let total = 0;
+        selectedOrder.forEach(item => {
+          const itemTotal = item.price * item.quantity;
+          total += itemTotal;
+
+          const p = document.createElement("p");
+          p.innerHTML = `
+            <span>${item.name} x ${item.quantity}</span>
+            <span>${itemTotal.toFixed(2)} €
+              <button class="remove-product-btn" onclick="removeProductFromOrder(${item.id})">✖</button>
+            </span>
+          `;
+          summaryDiv.appendChild(p);
+        });
+
+        const totalP = document.createElement("p");
+        totalP.style.fontWeight = "bold";
+        totalP.style.marginTop = "10px";
+        totalP.innerHTML = `<span>Total commande:</span> <span>${total.toFixed(2)} €</span>`;
+        summaryDiv.appendChild(totalP);
+
+        updateContactMessage(); // Met à jour le message du formulaire/WhatsApp
+      }
+
+      function updateContactMessage() {
+        const messageTextarea = document.getElementById("contact-message");
+        const nameInput = document.getElementById("contact-name");
+        const contactInput = document.getElementById("contact-email"); // Renommé pour clarté
+        const allergyInput = document.getElementById("contact-allergies"); // Nouveau champ allergies
+
+        const clientName = nameInput.value.trim();
+        const clientContact = contactInput.value.trim();
+        const clientAllergies = allergyInput.value.trim();
+
+        let message = "Bonjour, je souhaiterais commander :\n\n";
+
+        if (selectedOrder.length > 0) {
+          selectedOrder.forEach(item => {
+            message += `- ${item.name} x ${item.quantity} (${(item.price * item.quantity).toFixed(2)}€)\n`;
+          });
+          const total = selectedOrder.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+          message += `\nTotal estimé : ${total.toFixed(2)}€\n\n`;
+        } else {
+          message += "Aucun produit sélectionné pour le moment.\n\n"; // Ajout d'un saut de ligne
+        }
+
+        if (clientAllergies) {
+          message += `Déclaration allergies/intolérances: ${clientAllergies}\n\n`; // Ajout des allergies
+        }
+
+        if (clientName) {
+          message += `Mon nom est ${clientName}`;
+        } else {
+          message += `Mon nom est [Votre Nom]`;
+        }
+
+        if (clientContact) {
+          message += ` et mon contact est ${clientContact}.`;
+        } else {
+          message += ` et mon contact est [Votre Contact].`;
+        }
+
+        messageTextarea.value = message;
+
+        // Met à jour le lien WhatsApp
+        const whatsappLink = document.querySelector(".whatsapp");
+        let whatsappBaseUrl = "https://wa.me/15147029219?text=";
+        whatsappLink.href = whatsappBaseUrl + encodeURIComponent(message);
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        loadProducts();
+        populateProductSelector();
+        renderOrderSummary(); // Initialise le récapitulatif
+
+        const heroLogo = document.querySelector(".hero-logo");
+        const initialLogoWidth = 300;
+        const scrollThreshold = 300;
+
+        window.addEventListener("scroll", () => {
+          const scrollY = window.scrollY;
+
+          let newWidth = initialLogoWidth - scrollY;
+          if (newWidth < 0) newWidth = 0;
+
+          let newOpacity = 1 - (scrollY / scrollThreshold);
+          if (newOpacity < 0) newOpacity = 0;
+
+          heroLogo.style.width = `${newWidth}px`;
+          heroLogo.style.opacity = newOpacity;
+        });
+
+        document.getElementById("add-to-order-btn").addEventListener("click", addProductToOrder);
+
+        // Écouteurs d'événements pour les champs de nom, contact et allergies
+        document.getElementById("contact-name").addEventListener("input", updateContactMessage);
+        document.getElementById("contact-email").addEventListener("input", updateContactMessage);
+        document.getElementById("contact-allergies").addEventListener("input", updateContactMessage); // Nouvel écouteur
+
+        document.querySelector("#contact form").addEventListener("submit", (e) => {
+          e.preventDefault();
+          alert("Votre message / commande a été soumise !\n" + document.getElementById("contact-message").value);
+        });
+      });
+    </script>
+
+    <section id="contact" class="contact">
+      <h3>Contact & Commandes</h3>
+      <p>
+        Une envie sucrée ? Passez commande directement ci-dessous ou laissez-nous un message.
+      </p>
+
+      <form>
+        <input type="text" id="contact-name" placeholder="Votre nom" required />
+        <input type="email" id="contact-email" placeholder="Votre email ou numéro de téléphone" required />
+
+        <!-- Champ pour les allergies -->
+        <textarea
+          rows="3"
+          id="contact-allergies"
+          placeholder="Déclarez ici vos allergies ou produits à éviter (ex: sans lactose, sans noix...)"
+        ></textarea>
+
+        <!-- Sélecteur de produit et quantité -->
+        <div class="product-selector-group">
+          <select id="product-select"></select>
+          <input type="number" id="product-quantity" value="1" min="1" />
+          <button type="button" id="add-to-order-btn" class="add-product-btn">Ajouter</button>
+        </div>
+
+        <!-- Récapitulatif de la commande -->
+        <div id="selected-products-summary">
+          <p>Aucun produit sélectionné.</p>
+        </div>
+
+        <textarea
+          rows="5"
+          id="contact-message"
+          placeholder="Votre message ou commande..."
+          required
+        ></textarea>
+        <button type="submit">Envoyer le message / la commande</button>
+      </form>
+
+      <!-- Conteneur pour les boutons de réseaux sociaux -->
+      <div class="social-buttons">
+        <a class="whatsapp" href="https://wa.me/15147029219" target="_blank"
+          >📱 Commander via WhatsApp</a
+        >
+        <!-- Nouveau bouton Instagram -->
+        <a class="instagram" href="https://www.instagram.com/gazella_sweet/?igsh=MXJ1bGcxb25oMmJ6cw%3D%3D" target="_blank"
+          >📸 Suivez-nous sur Instagram</a
+        >
+      </div>
+    </section>
+
+    <footer>© 2025 Gazella — Fait avec amour 🍰</footer>
+  </body>
+</html>
