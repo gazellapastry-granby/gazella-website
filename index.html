@@ -488,6 +488,7 @@
             option.textContent = `${product.name} (${product.price.toFixed(2)}€)`;
             productSelect.appendChild(option);
           }
+          // Note: Vous pourriez vouloir ajouter l'ID du produit au texte pour le débogage si vous en avez besoin, mais le value est l'ID.
         });
       }
 
@@ -569,8 +570,8 @@
       function updateContactMessage() {
         const messageTextarea = document.getElementById("contact-message");
         const nameInput = document.getElementById("contact-name");
-        const contactInput = document.getElementById("contact-email"); // Renommé pour clarté
-        const allergyInput = document.getElementById("contact-allergies"); // Nouveau champ allergies
+        const contactInput = document.getElementById("contact-email");
+        const allergyInput = document.getElementById("contact-allergies");
 
         const clientName = nameInput.value.trim();
         const clientContact = contactInput.value.trim();
@@ -585,11 +586,11 @@
           const total = selectedOrder.reduce((sum, item) => sum + (item.price * item.quantity), 0);
           message += `\nTotal estimé : ${total.toFixed(2)}€\n\n`;
         } else {
-          message += "Aucun produit sélectionné pour le moment.\n\n"; // Ajout d'un saut de ligne
+          message += "Aucun produit sélectionné pour le moment.\n\n";
         }
 
         if (clientAllergies) {
-          message += `Déclaration allergies/intolérances: ${clientAllergies}\n\n`; // Ajout des allergies
+          message += `Déclaration allergies/intolérances: ${clientAllergies}\n\n`;
         }
 
         if (clientName) {
@@ -639,12 +640,55 @@
         // Écouteurs d'événements pour les champs de nom, contact et allergies
         document.getElementById("contact-name").addEventListener("input", updateContactMessage);
         document.getElementById("contact-email").addEventListener("input", updateContactMessage);
-        document.getElementById("contact-allergies").addEventListener("input", updateContactMessage); // Nouvel écouteur
+        document.getElementById("contact-allergies").addEventListener("input", updateContactMessage);
 
-        document.querySelector("#contact form").addEventListener("submit", (e) => {
-          e.preventDefault();
-          alert("Votre message / commande a été soumise !\n" + document.getElementById("contact-message").value);
+
+        // --- NOUVEAU CODE POUR L'ENVOI DU FORMULAIRE À GOOGLE SHEETS ---
+        const orderForm = document.getElementById("orderForm");
+        orderForm.addEventListener("submit", async (e) => {
+          e.preventDefault(); // Empêche l'envoi traditionnel du formulaire
+
+          const submitButton = orderForm.querySelector('button[type="submit"]');
+          submitButton.disabled = true; // Désactive le bouton pour éviter les doubles soumissions
+          submitButton.textContent = "Envoi en cours...";
+
+          // Récupérer les données du formulaire
+          const formData = new FormData(orderForm);
+          const data = {};
+          for (let [key, value] of formData.entries()) {
+            data[key] = value;
+          }
+
+          // URL de votre Google Apps Script (assurez-vous de la mettre à jour ici aussi)
+          const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwwru1IfME0W4ycFoVrXdZWAyK9vNiwrhpGn6RZRbE9y0WAi01Em5vzv6p7TDUQ0CQrbA/exec"; // <-- REMPLACEZ CETTE LIGNE
+
+          try {
+            const response = await fetch(SCRIPT_URL, {
+              method: "POST",
+              mode: "no-cors", // Nécessaire pour Google Apps Script
+              cache: "no-cache",
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+              body: new URLSearchParams(data).toString() // Envoyer les données au format URL-encodé
+            });
+
+            // Puisque mode: 'no-cors' ne permet pas de lire la réponse, nous allons juste supposer le succès
+            // En production, vous voudriez peut-être une solution backend plus robuste.
+            alert("Votre commande a été envoyée avec succès ! Nous vous contacterons bientôt.");
+            orderForm.reset(); // Réinitialise le formulaire
+            selectedOrder = []; // Vide la sélection de commande
+            renderOrderSummary(); // Met à jour le récapitulatif
+            updateContactMessage(); // Met à jour le message
+          } catch (error) {
+            console.error("Erreur lors de l'envoi du formulaire :", error);
+            alert("Une erreur est survenue lors de l'envoi de votre commande. Veuillez réessayer ou nous contacter directement.");
+          } finally {
+            submitButton.disabled = false;
+            submitButton.textContent = "Envoyer le message / la commande";
+          }
         });
+        // --- FIN DU NOUVEAU CODE POUR L'ENVOI DU FORMULAIRE ---
       });
     </script>
 
@@ -654,14 +698,14 @@
         Une envie sucrée ? Passez commande directement ci-dessous ou laissez-nous un message.
       </p>
 
-      <form>
-        <input type="text" id="contact-name" placeholder="Votre nom" required />
-        <input type="email" id="contact-email" placeholder="Votre email ou numéro de téléphone" required />
+      <form id="orderForm">
+        <input type="text" id="contact-name" name="NomClient" placeholder="Votre nom" required />
+        <input type="email" id="contact-email" name="ContactClient" placeholder="Votre email ou numéro de téléphone" required />
 
-        <!-- Champ pour les allergies -->
         <textarea
           rows="3"
           id="contact-allergies"
+          name="Allergies"
           placeholder="Déclarez ici vos allergies ou produits à éviter (ex: sans lactose, sans noix...)"
         ></textarea>
 
@@ -680,6 +724,7 @@
         <textarea
           rows="5"
           id="contact-message"
+          name="DetailsCommande"
           placeholder="Votre message ou commande..."
           required
         ></textarea>
