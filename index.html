@@ -203,6 +203,18 @@
         color: var(--text);
       }
 
+      /* NOUVEAU STYLE pour le feedback d'ajout */
+      .product-add-controls button.added-feedback {
+        background-color: #28a745; /* Vert succès */
+        animation: fadeOutGreen 1.5s forwards; /* Animation de fondu */
+      }
+
+      @keyframes fadeOutGreen {
+        0% { background-color: #28a745; color: white; transform: scale(1.05); }
+        50% { background-color: #28a745; color: white; transform: scale(1); }
+        100% { background-color: var(--rose); color: white; } /* Revenir à la couleur normale */
+      }
+
       .contact {
         background-color: var(--peche);
         color: white;
@@ -240,6 +252,37 @@
         background-color: white; /* Pour les selects */
         color: var(--text);
       }
+
+      /* Styles pour les labels et les groupes de radio buttons/select */
+      .form-group {
+        text-align: left;
+        color: white;
+        font-size: 1rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+      }
+
+      .radio-group {
+        display: flex;
+        gap: 15px;
+        margin-top: 0.5rem;
+      }
+
+      .radio-group input[type="radio"] {
+        margin-right: 5px;
+        transform: scale(1.2); /* Agrandir les radios */
+      }
+
+      .radio-group label {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0; /* Override default label margin */
+      }
+
 
       /* Styles spécifiques pour le sélecteur de produit et la quantité */
       .product-selector-group {
@@ -512,7 +555,7 @@
                 ? `
                 <div class="product-add-controls">
                     <input type="number" value="1" min="1" id="quantity-${product.id}" />
-                    <button onclick="addProductToOrder(${product.id})">Ajouter</button>
+                    <button id="add-btn-${product.id}" onclick="addProductToOrder(${product.id}, event)">Ajouter</button>
                 </div>
                 `
                 : '<p class="unavailable">Indisponible</p>'
@@ -539,23 +582,24 @@
         });
       }
 
-      // MODIFICATION ICI: addProductToOrder peut maintenant prendre un ID de produit directement
-      // ou lire depuis les sélecteurs généraux.
-      function addProductToOrder(productIdFromButton = null) {
+      function addProductToOrder(productIdFromButton = null, event = null) {
         let selectedProductId;
         let quantity;
+        let targetButton = null;
 
         if (productIdFromButton) {
-          // Si appelé depuis un bouton de produit
           selectedProductId = productIdFromButton;
           const quantityInput = document.getElementById(`quantity-${productIdFromButton}`);
           quantity = parseInt(quantityInput.value);
+          if (event) {
+            targetButton = event.target;
+          }
         } else {
-          // Si appelé depuis le sélecteur global (dans la section contact)
           const productSelect = document.getElementById("product-select");
           const quantityInput = document.getElementById("product-quantity");
           selectedProductId = parseInt(productSelect.value);
           quantity = parseInt(quantityInput.value);
+          targetButton = document.getElementById("add-to-order-btn");
         }
 
         if (!selectedProductId || quantity <= 0 || isNaN(quantity)) {
@@ -580,13 +624,24 @@
           }
 
           renderOrderSummary();
-          // Réinitialiser le sélecteur global et la quantité après ajout si utilisé
+
+          if (targetButton) {
+            const originalText = targetButton.textContent;
+            targetButton.textContent = "Ajouté !";
+            targetButton.classList.add('added-feedback');
+            targetButton.disabled = true;
+
+            setTimeout(() => {
+              targetButton.textContent = originalText;
+              targetButton.classList.remove('added-feedback');
+              targetButton.disabled = false;
+            }, 1500);
+          }
+
           if (!productIdFromButton) {
             document.getElementById("product-select").value = "";
             document.getElementById("product-quantity").value = 1;
           }
-          // Optionnel: Donner un feedback visuel sur le bouton d'ajout du produit
-          // Ex: Changer le texte du bouton brièvement en "Ajouté !"
         }
       }
 
@@ -597,7 +652,7 @@
 
       function renderOrderSummary() {
         const summaryDiv = document.getElementById("selected-products-summary");
-        summaryDiv.innerHTML = ""; // Vide le contenu actuel
+        summaryDiv.innerHTML = "";
 
         if (selectedOrder.length === 0) {
           summaryDiv.innerHTML = "<p>Aucun produit sélectionné.</p>";
@@ -625,7 +680,7 @@
         totalP.innerHTML = `<span>Total commande:</span> <span>${total.toFixed(2)} €</span>`;
         summaryDiv.appendChild(totalP);
 
-        updateContactMessage(); // Met à jour le message du formulaire/WhatsApp
+        updateContactMessage();
       }
 
       function updateContactMessage() {
@@ -633,10 +688,15 @@
         const nameInput = document.getElementById("contact-name");
         const contactInput = document.getElementById("contact-email");
         const allergyInput = document.getElementById("contact-allergies");
+        const deliveryMethod = document.querySelector('input[name="MethodeRecuperation"]:checked');
+        const deliveryDate = document.getElementById("delivery-date");
 
         const clientName = nameInput.value.trim();
         const clientContact = contactInput.value.trim();
         const clientAllergies = allergyInput.value.trim();
+        const selectedMethod = deliveryMethod ? deliveryMethod.value : "Non spécifiée";
+        const selectedDate = deliveryDate.value ? new Date(deliveryDate.value).toLocaleDateString('fr-FR') : "Non spécifiée";
+
 
         let message = "Bonjour, je souhaiterais commander :\n\n";
 
@@ -649,6 +709,9 @@
         } else {
           message += "Aucun produit sélectionné pour le moment.\n\n";
         }
+
+        message += `Méthode de récupération : ${selectedMethod}\n`;
+        message += `Date souhaitée : ${selectedDate}\n\n`;
 
         if (clientAllergies) {
           message += `Déclaration allergies/intolérances: ${clientAllergies}\n\n`;
@@ -668,7 +731,6 @@
 
         messageTextarea.value = message;
 
-        // Met à jour le lien WhatsApp
         const whatsappLink = document.querySelector(".whatsapp");
         let whatsappBaseUrl = "https://wa.me/15147029219?text=";
         whatsappLink.href = whatsappBaseUrl + encodeURIComponent(message);
@@ -696,32 +758,35 @@
           heroLogo.style.opacity = newOpacity;
         });
 
-        // L'écouteur pour le bouton d'ajout global
         document.getElementById("add-to-order-btn").addEventListener("click", () => addProductToOrder());
 
-        // Écouteurs d'événements pour les champs de nom, contact et allergies
+        // Écouteurs d'événements pour les champs de nom, contact, allergies, méthode et date
         document.getElementById("contact-name").addEventListener("input", updateContactMessage);
         document.getElementById("contact-email").addEventListener("input", updateContactMessage);
         document.getElementById("contact-allergies").addEventListener("input", updateContactMessage);
-
+        document.querySelectorAll('input[name="MethodeRecuperation"]').forEach(radio => {
+            radio.addEventListener('change', updateContactMessage);
+        });
+        document.getElementById("delivery-date").addEventListener("change", updateContactMessage);
 
         // --- NOUVEAU CODE POUR L'ENVOI DU FORMULAIRE À GOOGLE SHEETS ---
         const orderForm = document.getElementById("orderForm");
         orderForm.addEventListener("submit", async (e) => {
-          e.preventDefault(); // Empêche l'envoi traditionnel du formulaire
+          e.preventDefault();
 
           const submitButton = orderForm.querySelector('button[type="submit"]');
-          submitButton.disabled = true; // Désactive le bouton pour éviter les doubles soumissions
+          submitButton.disabled = true;
           submitButton.textContent = "Envoi en cours...";
 
-          // Récupérer les données du formulaire
           const formData = new FormData(orderForm);
           const data = {};
           for (let [key, value] of formData.entries()) {
             data[key] = value;
           }
+          // Ajout des détails de la commande sélectionnée dans les données du formulaire
+          data["ProduitsCommandes"] = JSON.stringify(selectedOrder);
 
-          // URL de votre Google Apps Script (assurez-vous de la mettre à jour ici aussi)
+
           const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwwru1IfME0W4ycFoVrXdZWAyK9vNiwrhpGn6RZRbE9y0WAi01Em5vzv6p7TDUQ0CQrbA/exec";
 
           try {
@@ -736,10 +801,10 @@
             });
 
             alert("Votre commande a été envoyée avec succès ! Nous vous contacterons bientôt.");
-            orderForm.reset(); // Réinitialise le formulaire
-            selectedOrder = []; // Vide la sélection de commande
-            renderOrderSummary(); // Met à jour le récapitulatif
-            updateContactMessage(); // Met à jour le message
+            orderForm.reset();
+            selectedOrder = [];
+            renderOrderSummary();
+            updateContactMessage();
           } catch (error) {
             console.error("Erreur lors de l'envoi du formulaire :", error);
             alert("Une erreur est survenue lors de l'envoi de votre commande. Veuillez réessayer ou nous contacter directement.");
@@ -760,7 +825,7 @@
 
       <form id="orderForm">
         <input type="text" id="contact-name" name="NomClient" placeholder="Votre nom" required />
-        <input type="email" id="contact-email" name="ContactClient" placeholder="Votre email ou numéro de téléphone" required />
+        <input type="text" id="contact-email" name="ContactClient" placeholder="Votre email ou numéro de téléphone" required />
 
         <textarea
           rows="3"
@@ -768,6 +833,24 @@
           name="Allergies"
           placeholder="Déclarez ici vos allergies ou produits à éviter (ex: sans lactose, sans noix...)"
         ></textarea>
+
+        <!-- NOUVEAUX CHAMPS : Méthode de récupération et Date -->
+        <div class="form-group">
+          <label>Méthode de récupération :</label>
+          <div class="radio-group">
+            <input type="radio" id="pickup" name="MethodeRecuperation" value="Ramassage" checked>
+            <label for="pickup">Ramassage</label>
+
+            <input type="radio" id="delivery" name="MethodeRecuperation" value="Livraison">
+            <label for="delivery">Livraison</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+            <label for="delivery-date">Date souhaitée :</label>
+            <input type="date" id="delivery-date" name="DateSouhaitee" required>
+        </div>
+
 
         <!-- Sélecteur de produit et quantité (peut être masqué ou réutilisé comme un fallback) -->
         <div class="product-selector-group">
@@ -805,4 +888,4 @@
 
     <footer>© 2025 Gazella — Fait avec amour 🍰</footer>
   </body>
-</html>
+</html>f
