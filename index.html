@@ -561,7 +561,7 @@
             <img src="${product.image}" alt="${product.name}" />
             <h4>${product.name}</h4>
             <p>${product.description}</p>
-            <p class="price">${product.price.toFixed(2)} €</p>
+            <p class="price">${product.price.toFixed(2)} CAD</p>
             ${
               product.available
                 ? `
@@ -588,7 +588,7 @@
           if (product.available) {
             const option = document.createElement("option");
             option.value = product.id;
-            option.textContent = `${product.name} (${product.price.toFixed(2)}€)`;
+            option.textContent = `${product.name} (${product.price.toFixed(2)}CAD)`;
             productSelect.appendChild(option);
           }
         });
@@ -679,7 +679,7 @@
           const p = document.createElement("p");
           p.innerHTML = `
             <span>${item.name} x ${item.quantity}</span>
-            <span>${itemTotal.toFixed(2)} €
+            <span>${itemTotal.toFixed(2)} CAD
               <button class="remove-product-btn" onclick="removeProductFromOrder(${item.id})">✖</button>
             </span>
           `;
@@ -689,7 +689,7 @@
         const totalP = document.createElement("p");
         totalP.style.fontWeight = "bold";
         totalP.style.marginTop = "10px";
-        totalP.innerHTML = `<span>Total commande:</span> <span>${total.toFixed(2)} €</span>`;
+        totalP.innerHTML = `<span>Total commande:</span> <span>${total.toFixed(2)} CAD</span>`;
         summaryDiv.appendChild(totalP);
 
         updateContactMessage();
@@ -716,10 +716,10 @@
 
         if (selectedOrder.length > 0) {
           selectedOrder.forEach(item => {
-            message += `- ${item.name} x ${item.quantity} (${(item.price * item.quantity).toFixed(2)}€)\n`;
+            message += `- ${item.name} x ${item.quantity} (${(item.price * item.quantity).toFixed(2)}CAD)\n`;
           });
           const total = selectedOrder.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-          message += `\nTotal estimé : ${total.toFixed(2)}€\n\n`;
+          message += `\nTotal estimé : ${total.toFixed(2)}CAD\n\n`;
         } else {
           message += "Aucun produit sélectionné pour le moment.\n\n";
         }
@@ -919,5 +919,6 @@
     <footer>© 2025 Gazella — Fait avec amour 🍰</footer>
   </body>
 </html>f
+
 
 
