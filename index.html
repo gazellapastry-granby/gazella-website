@@ -690,12 +690,14 @@
         const allergyInput = document.getElementById("contact-allergies");
         const deliveryMethod = document.querySelector('input[name="MethodeRecuperation"]:checked');
         const deliveryDate = document.getElementById("delivery-date");
+        const deliveryTime = document.getElementById("delivery-time"); // NOUVEAU
 
         const clientName = nameInput.value.trim();
         const clientContact = contactInput.value.trim();
         const clientAllergies = allergyInput.value.trim();
         const selectedMethod = deliveryMethod ? deliveryMethod.value : "Non spécifiée";
         const selectedDate = deliveryDate.value ? new Date(deliveryDate.value).toLocaleDateString('fr-FR') : "Non spécifiée";
+        const selectedTime = deliveryTime.value ? deliveryTime.value : "Non spécifiée"; // NOUVEAU
 
 
         let message = "Bonjour, je souhaiterais commander :\n\n";
@@ -711,7 +713,8 @@
         }
 
         message += `Méthode de récupération : ${selectedMethod}\n`;
-        message += `Date souhaitée : ${selectedDate}\n\n`;
+        message += `Date souhaitée : ${selectedDate}\n`;
+        message += `Plage horaire souhaitée : ${selectedTime}\n\n`; // NOUVEAU
 
         if (clientAllergies) {
           message += `Déclaration allergies/intolérances: ${clientAllergies}\n\n`;
@@ -760,7 +763,7 @@
 
         document.getElementById("add-to-order-btn").addEventListener("click", () => addProductToOrder());
 
-        // Écouteurs d'événements pour les champs de nom, contact, allergies, méthode et date
+        // Écouteurs d'événements pour les champs de nom, contact, allergies, méthode, date et HEURE
         document.getElementById("contact-name").addEventListener("input", updateContactMessage);
         document.getElementById("contact-email").addEventListener("input", updateContactMessage);
         document.getElementById("contact-allergies").addEventListener("input", updateContactMessage);
@@ -768,6 +771,8 @@
             radio.addEventListener('change', updateContactMessage);
         });
         document.getElementById("delivery-date").addEventListener("change", updateContactMessage);
+        document.getElementById("delivery-time").addEventListener("change", updateContactMessage); // NOUVEAU
+
 
         // --- NOUVEAU CODE POUR L'ENVOI DU FORMULAIRE À GOOGLE SHEETS ---
         const orderForm = document.getElementById("orderForm");
@@ -849,6 +854,19 @@
         <div class="form-group">
             <label for="delivery-date">Date souhaitée :</label>
             <input type="date" id="delivery-date" name="DateSouhaitee" required>
+        </div>
+
+        <!-- NOUVEAU CHAMP : Plage horaire souhaitée -->
+        <div class="form-group">
+            <label for="delivery-time">Plage horaire souhaitée :</label>
+            <select id="delivery-time" name="PlageHoraireSouhaitee" required>
+                <option value="">-- Choisir une plage horaire --</option>
+                <option value="9h-12h">9h - 12h</option>
+                <option value="12h-15h">12h - 15h</option>
+                <option value="15h-18h">15h - 18h</option>
+                <option value="18h-21h">18h - 21h</option>
+                <option value="Flexible">Flexible</option>
+            </select>
         </div>
 
 
