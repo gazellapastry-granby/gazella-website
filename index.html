@@ -522,6 +522,59 @@
         font-size: 0.9rem;
       }
 
+      /* Styles pour l'icône de panier flottante */
+      .cart-icon {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: var(--peche);
+        color: white;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2rem;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        z-index: 100;
+        transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+      }
+
+      .cart-icon:hover {
+        transform: scale(1.1);
+      }
+
+      .cart-count {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background-color: var(--rose);
+        color: white;
+        border-radius: 50%;
+        padding: 0.2rem 0.5rem;
+        font-size: 0.8rem;
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: 25px; /* Assure que le cercle est rond même avec un seul chiffre */
+        height: 25px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Animation d'ajout au panier */
+      @keyframes cartPulse {
+        0% { transform: scale(1); background-color: var(--peche); }
+        50% { transform: scale(1.2); background-color: #28a745; /* Vert succès */ }
+        100% { transform: scale(1); background-color: var(--peche); }
+      }
+
+      .cart-icon.added {
+        animation: cartPulse 0.8s ease-in-out;
+      }
+
       /* Responsive adjustments */
       @media (max-width: 768px) {
         header {
@@ -558,6 +611,20 @@
         .social-buttons a {
             padding: 0.8rem 1.5rem;
             font-size: 0.9rem;
+        }
+
+        .cart-icon {
+          width: 50px;
+          height: 50px;
+          font-size: 1.5rem;
+          bottom: 15px;
+          right: 15px;
+        }
+        .cart-count {
+          padding: 0.1rem 0.4rem;
+          font-size: 0.7rem;
+          min-width: 20px;
+          height: 20px;
         }
       }
 
@@ -806,6 +873,8 @@
           }
 
           renderOrderSummary();
+          updateCartIcon(); // NOUVEAU: Mettre à jour l'icône du panier
+          animateCartIcon(); // NOUVEAU: Animer l'icône du panier
 
           if (targetButton) {
             const originalText = targetButton.textContent;
@@ -830,6 +899,7 @@
       function removeProductFromOrder(productId) {
         selectedOrder = selectedOrder.filter(item => item.id !== productId);
         renderOrderSummary();
+        updateCartIcon(); // NOUVEAU: Mettre à jour l'icône du panier
       }
 
       function renderOrderSummary() {
@@ -921,10 +991,26 @@
         whatsappLink.href = whatsappBaseUrl + encodeURIComponent(message);
       }
 
+      function updateCartIcon() {
+        const cartCountElement = document.getElementById("cart-count");
+        const totalItems = selectedOrder.reduce((sum, item) => sum + item.quantity, 0);
+        cartCountElement.textContent = totalItems;
+      }
+
+      function animateCartIcon() {
+        const cartIcon = document.getElementById("cart-icon");
+        cartIcon.classList.add("added");
+        setTimeout(() => {
+          cartIcon.classList.remove("added");
+        }, 800); // Durée de l'animation doit correspondre à la durée de l'animation CSS (cartPulse)
+      }
+
+
       document.addEventListener("DOMContentLoaded", () => {
         loadProducts();
         populateProductSelector();
         renderOrderSummary(); // Initialise le récapitulatif
+        updateCartIcon(); // NOUVEAU: Initialiser l'icône du panier au chargement
 
         const heroLogo = document.querySelector(".hero-logo");
         const initialLogoWidth = 300;
@@ -944,6 +1030,16 @@
         });
 
         document.getElementById("add-to-order-btn").addEventListener("click", () => addProductToOrder());
+
+        // NOUVEAU: Gérer le clic sur l'icône du panier
+        document.getElementById("cart-icon").addEventListener("click", () => {
+            document.getElementById("contact").scrollIntoView({ behavior: "smooth" });
+            // Optionnel: Mettre en évidence la zone de commande si nécessaire
+            // document.getElementById("orderForm").style.border = "2px solid var(--peche)";
+            // setTimeout(() => {
+            //     document.getElementById("orderForm").style.border = "none";
+            // }, 2000);
+        });
 
         // Écouteurs d'événements pour les champs de nom, contact, allergies, méthode, date et HEURE
         document.getElementById("contact-name").addEventListener("input", updateContactMessage);
@@ -992,6 +1088,7 @@
             selectedOrder = [];
             renderOrderSummary();
             updateContactMessage();
+            updateCartIcon(); // Réinitialise l'icône du panier après envoi
           } catch (error) {
             console.error("Erreur lors de l'envoi du formulaire :", error);
             alert("Une erreur est survenue lors de l'envoi de votre commande. Veuillez réessayer ou nous contacter directement.");
@@ -1088,7 +1185,10 @@
 
     <!-- FOOTER AVEC MENTION GRANBY -->
     <footer>© 2025 Gazella — Fait avec amour à Granby, Québec 🍰</footer>
+
+    <!-- Icône de panier flottante -->
+    <div id="cart-icon" class="cart-icon">
+        🛒<span id="cart-count" class="cart-count">0</span>
+    </div>
   </body>
 </html>
-
-
