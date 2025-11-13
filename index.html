@@ -215,6 +215,107 @@
         100% { background-color: var(--rose); color: white; } /* Revenir à la couleur normale */
       }
 
+      /* NOUVELLE SECTION: Professionnels */
+      .professionals {
+        background-color: var(--rose-pale); /* Couleur du fond */
+        color: var(--text);
+        padding: 4rem 2rem;
+        text-align: center;
+      }
+
+      .professionals h3 {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+        font-family: "Playfair Display", serif;
+      }
+
+      .professionals p {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .professional-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+      }
+
+      .professional-buttons a {
+        background-color: var(--peche);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+      }
+
+      .professional-buttons a:hover {
+        background-color: var(--rose);
+        transform: translateY(-3px);
+      }
+
+
+      /* NOUVELLE SECTION: Points de Vente */
+      .find-us {
+        background-color: white; /* Fond blanc pour contraste */
+        color: var(--text);
+        padding: 4rem 2rem;
+        text-align: center;
+      }
+
+      .find-us h3 {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+        font-family: "Playfair Display", serif;
+      }
+
+      .find-us p {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .location-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 auto 2rem auto;
+        max-width: 600px;
+      }
+
+      .location-list li {
+        background-color: var(--rose-pale);
+        padding: 1rem 1.5rem;
+        margin-bottom: 0.8rem;
+        border-radius: 10px;
+        text-align: left;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      }
+
+      .location-list li span {
+        font-weight: 500;
+      }
+
+      .location-list li a {
+        color: var(--peche);
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.3s ease;
+      }
+
+      .location-list li a:hover {
+        color: var(--text);
+      }
+
       .contact {
         background-color: var(--peche);
         color: white;
@@ -421,6 +522,45 @@
         font-size: 0.9rem;
       }
 
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        header {
+          flex-direction: column;
+          padding: 1rem;
+        }
+
+        nav {
+          margin-top: 1rem;
+        }
+
+        .hero h2 {
+          font-size: 2rem;
+        }
+
+        .hero p {
+          font-size: 1rem;
+        }
+
+        .product-grid {
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+
+        .product-selector-group {
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .product-selector-group select,
+        .product-selector-group input[type="number"],
+        .add-product-btn {
+            width: 100%;
+        }
+
+        .social-buttons a {
+            padding: 0.8rem 1.5rem;
+            font-size: 0.9rem;
+        }
+      }
+
       @keyframes fadeIn {
         from {
           opacity: 0;
@@ -438,6 +578,8 @@
       <img src="Gazella_Logo.png" alt="Logo Gazella" />
       <nav>
         <a href="#produits">Produits</a>
+        <a href="#professionals">Professionnels</a> <!-- Nouveau lien -->
+        <a href="#find-us">Nos points de vente</a> <!-- Nouveau lien -->
         <a href="#contact">Contact</a>
       </nav>
     </header>
@@ -461,6 +603,46 @@
       <div id="product-grid" class="product-grid">
         <!-- Products will be loaded here dynamically -->
       </div>
+    </section>
+
+    <!-- NOUVELLE SECTION POUR LES PROFESSIONNELS -->
+    <section id="professionals" class="professionals">
+      <h3>Vous êtes un professionnel ?</h3>
+      <p>
+        Gazella propose des partenariats pour la distribution de nos pâtisseries
+        artisanales. Offrez à vos clients l'authenticité et la saveur des créations faites avec amour.
+      </p>
+      <div class="professional-buttons">
+        <a href="#contact">Contactez-nous pour une distribution</a>
+        <!-- Vous pouvez ajouter un lien vers un PDF ou une page "Tarifs Pros" ici si elle existe -->
+        <!-- <a href="tarifs-professionnels.pdf" target="_blank">Nos Tarifs Professionnels</a> -->
+      </div>
+    </section>
+
+    <!-- NOUVELLE SECTION POUR LES POINTS DE VENTE -->
+    <section id="find-us" class="find-us">
+      <h3>Trouvez nos produits près de chez vous</h3>
+      <p>
+        Découvrez où vous pouvez retrouver les délices Gazella chez nos partenaires locaux.
+      </p>
+      <ul class="location-list">
+        <li>
+          <span>Boulangerie Le Bon Pain</span>
+          <a href="https://maps.app.goo.gl/exemple1" target="_blank">Voir sur la carte</a>
+        </li>
+        <li>
+          <span>Café Douce Heure</span>
+          <a href="https://maps.app.goo.gl/exemple2" target="_blank">Voir sur la carte</a>
+        </li>
+        <li>
+          <span>Épicerie Fine Gourmande</span>
+          <a href="https://maps.app.goo.gl/exemple3" target="_blank">Voir sur la carte</a>
+        </li>
+        <!-- Ajoutez d'autres points de vente ici -->
+      </ul>
+      <p>
+        *Liste non exhaustive, mise à jour régulièrement.
+      </p>
     </section>
 
     <script>
@@ -916,9 +1098,7 @@
       </div>
     </section>
 
-    <footer>© 2025 Gazella — Fait avec amour 🍰</footer>
+    <!-- FOOTER AVEC MENTION GRANBY -->
+    <footer>© 2025 Gazella — Fait avec amour à Granby, Québec 🍰</footer>
   </body>
-</html>f
-
-
-
+</html>
