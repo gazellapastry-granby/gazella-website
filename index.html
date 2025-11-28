@@ -39,11 +39,16 @@
         align-items: center;
         position: sticky;
         top: 0;
-        z-index: 10;
+        z-index: 1000; /* Augmenté pour être au-dessus de tout */
       }
 
       header img {
-        height: 80px; /* Logo plus grand */
+        height: 80px;
+      }
+
+      nav {
+        display: flex;
+        align-items: center;
       }
 
       nav a {
@@ -56,6 +61,23 @@
 
       nav a:hover {
         color: white;
+      }
+
+      /* Styles du bouton Hamburger (caché sur Desktop) */
+      .hamburger {
+        display: none;
+        cursor: pointer;
+        flex-direction: column;
+        gap: 5px;
+        z-index: 1001;
+      }
+
+      .bar {
+        width: 25px;
+        height: 3px;
+        background-color: var(--text);
+        transition: all 0.3s ease-in-out;
+        border-radius: 5px;
       }
 
       .hero {
@@ -72,12 +94,11 @@
         animation: fadeIn 2s ease-in-out;
       }
 
-      /* Cibler spécifiquement l'image du hero pour l'animation de scroll */
       .hero-logo {
-        width: 300px; /* Taille initiale */
+        width: 300px;
         margin-bottom: 1.5rem;
         animation: fadeIn 2s ease-in-out;
-        transition: width 0.3s ease-out, opacity 0.3s ease-out; /* Ajout d'une transition pour un mouvement fluide */
+        transition: width 0.3s ease-out, opacity 0.3s ease-out;
       }
 
       .hero h2 {
@@ -131,9 +152,9 @@
         padding: 1.5rem;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         transition: transform 0.3s ease;
-        display: flex; /* Utilisation de flexbox pour aligner contenu */
+        display: flex;
         flex-direction: column;
-        justify-content: space-between; /* Pousse les boutons en bas */
+        justify-content: space-between;
       }
 
       .product:hover {
@@ -157,7 +178,7 @@
         font-weight: 500;
         color: var(--peche);
         margin-top: 0.5rem;
-        margin-bottom: 1rem; /* Espace avant les contrôles d'ajout */
+        margin-bottom: 1rem;
       }
 
       .unavailable {
@@ -166,20 +187,19 @@
         margin-top: 0.5rem;
       }
 
-      /* Styles pour le groupe quantité/bouton d'ajout sur les produits */
       .product-add-controls {
         display: flex;
         align-items: center;
         gap: 10px;
-        margin-top: auto; /* Pousse le groupe en bas du flex container .product */
+        margin-top: auto;
       }
 
       .product-add-controls input[type="number"] {
-        width: 60px; /* Plus petit */
+        width: 60px;
         padding: 0.5rem;
         text-align: center;
         -moz-appearance: textfield;
-        appearance: textfield; /* Assure que les flèches sont masquées */
+        appearance: textfield;
       }
 
       .product-add-controls input[type="number"]::-webkit-outer-spin-button,
@@ -197,7 +217,7 @@
         cursor: pointer;
         color: white;
         transition: 0.3s;
-        flex-grow: 1; /* Permet au bouton de prendre l'espace restant */
+        flex-grow: 1;
       }
 
       .product-add-controls button:hover {
@@ -205,21 +225,19 @@
         color: var(--text);
       }
 
-      /* NOUVEAU STYLE pour le feedback d'ajout */
       .product-add-controls button.added-feedback {
-        background-color: #28a745; /* Vert succès */
-        animation: fadeOutGreen 1.5s forwards; /* Animation de fondu */
+        background-color: #28a745;
+        animation: fadeOutGreen 1.5s forwards;
       }
 
       @keyframes fadeOutGreen {
         0% { background-color: #28a745; color: white; transform: scale(1.05); }
         50% { background-color: #28a745; color: white; transform: scale(1); }
-        100% { background-color: var(--rose); color: white; } /* Revenir à la couleur normale */
+        100% { background-color: var(--rose); color: white; }
       }
 
-      /* NOUVELLE SECTION: Professionnels */
       .professionals {
-        background-color: var(--rose-pale); /* Couleur du fond */
+        background-color: var(--rose-pale);
         color: var(--text);
         padding: 4rem 2rem;
         text-align: center;
@@ -261,10 +279,8 @@
         transform: translateY(-3px);
       }
 
-
-      /* NOUVELLE SECTION: Points de Vente */
       .find-us {
-        background-color: white; /* Fond blanc pour contraste */
+        background-color: white;
         color: var(--text);
         padding: 4rem 2rem;
         text-align: center;
@@ -352,11 +368,10 @@
         border: none;
         font-size: 1rem;
         outline: none;
-        background-color: white; /* Pour les selects */
+        background-color: white;
         color: var(--text);
       }
 
-      /* Styles pour les labels et les groupes de radio buttons/select */
       .form-group {
         text-align: left;
         color: white;
@@ -377,38 +392,36 @@
 
       .radio-group input[type="radio"] {
         margin-right: 5px;
-        transform: scale(1.2); /* Agrandir les radios */
+        transform: scale(1.2);
       }
 
       .radio-group label {
         display: flex;
         align-items: center;
-        margin-bottom: 0; /* Override default label margin */
+        margin-bottom: 0;
       }
 
-
-      /* Styles spécifiques pour le sélecteur de produit et la quantité */
       .product-selector-group {
         display: flex;
         gap: 10px;
         align-items: center;
-        flex-wrap: wrap; /* Permet un retour à la ligne sur petits écrans */
+        flex-wrap: wrap;
       }
 
       .product-selector-group select {
         flex-grow: 1;
-        min-width: 150px; /* Assure une largeur minimale */
+        min-width: 150px;
       }
 
       .product-selector-group input[type="number"] {
-        width: 80px; /* Ajuster la largeur de l'input quantité */
+        width: 80px;
         text-align: center;
-        -moz-appearance: textfield; /* Cache les flèches sur Firefox */
+        -moz-appearance: textfield;
       }
 
       .product-selector-group input[type="number"]::-webkit-outer-spin-button,
       .product-selector-group input[type="number"]::-webkit-inner-spin-button {
-        -webkit-appearance: none; /* Cache les flèches sur Chrome/Safari */
+        -webkit-appearance: none;
         margin: 0;
       }
 
@@ -421,7 +434,7 @@
         cursor: pointer;
         color: white;
         transition: 0.3s;
-        flex-shrink: 0; /* Empêche le bouton de rétrécir */
+        flex-shrink: 0;
       }
 
       .add-product-btn:hover {
@@ -436,7 +449,7 @@
         text-align: left;
         color: var(--text);
         font-size: 0.9rem;
-        min-height: 50px; /* Assure une hauteur minimale */
+        min-height: 50px;
       }
 
       #selected-products-summary p {
@@ -459,7 +472,6 @@
         margin-left: 10px;
       }
 
-
       button[type="submit"] {
         background-color: var(--rose);
         border: none;
@@ -476,18 +488,17 @@
         color: var(--text);
       }
 
-      /* Styles pour les boutons de réseaux sociaux */
       .social-buttons {
         display: flex;
-        justify-content: center; /* Centre les boutons */
-        gap: 1.5rem; /* Espace entre les boutons */
-        margin-top: 2rem; /* Espace au-dessus des boutons */
-        flex-wrap: wrap; /* Permet aux boutons de passer à la ligne sur petits écrans */
+        justify-content: center;
+        gap: 1.5rem;
+        margin-top: 2rem;
+        flex-wrap: wrap;
       }
 
       .social-buttons a {
-        display: inline-flex; /* Permet d'aligner l'icône et le texte */
-        align-items: center; /* Centre verticalement */
+        display: inline-flex;
+        align-items: center;
         color: white;
         padding: 1rem 2rem;
         border-radius: 50px;
@@ -502,11 +513,10 @@
       }
 
       .whatsapp {
-        background-color: #25d366; /* Couleur WhatsApp */
+        background-color: #25d366;
       }
 
       .instagram {
-        /* Gradient Instagram */
         background-image: linear-gradient(
           45deg,
           #feda75,
@@ -524,7 +534,6 @@
         font-size: 0.9rem;
       }
 
-      /* Styles pour l'icône de panier flottante */
       .cart-icon {
         position: fixed;
         bottom: 20px;
@@ -561,15 +570,14 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        min-width: 25px; /* Assure que le cercle est rond même avec un seul chiffre */
+        min-width: 25px;
         height: 25px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
       }
 
-      /* Animation d'ajout au panier */
       @keyframes cartPulse {
         0% { transform: scale(1); background-color: var(--peche); }
-        50% { transform: scale(1.2); background-color: #28a745; /* Vert succès */ }
+        50% { transform: scale(1.2); background-color: #28a745; }
         100% { transform: scale(1); background-color: var(--peche); }
       }
 
@@ -579,15 +587,68 @@
 
       /* Responsive adjustments */
       @media (max-width: 768px) {
+        /* Modification pour le Header Mobile */
         header {
-          flex-direction: column;
-          padding: 1rem;
+          flex-direction: row; /* Garder ligne horizontale */
+          justify-content: space-between;
+          padding: 0.5rem 1.5rem;
+          position: sticky;
         }
 
+        /* Afficher le burger menu sur mobile */
+        .hamburger {
+          display: flex;
+        }
+
+        /* Styles de la navigation mobile (Menu déroulant) */
         nav {
-          margin-top: 1rem;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          width: 100%;
+          background-color: var(--rose);
+          flex-direction: column;
+          align-items: center;
+          gap: 0;
+          
+          /* Animation d'ouverture */
+          max-height: 0;
+          overflow: hidden;
+          transition: max-height 0.4s ease-in-out;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
+        /* Classe ajoutée par JS pour ouvrir le menu */
+        nav.active {
+          max-height: 400px; /* Assez grand pour tout le contenu */
+          padding-bottom: 1rem;
+          border-top: 1px solid rgba(255,255,255,0.3);
+        }
+
+        nav a {
+          margin: 1rem 0;
+          width: 100%;
+          text-align: center;
+          display: block;
+          padding: 0.5rem;
+        }
+        
+        nav a:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+
+        /* Animation du burger en croix */
+        .hamburger.active .bar:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active .bar:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+        .hamburger.active .bar:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        /* Autres styles responsives existants */
         .hero h2 {
           font-size: 2rem;
         }
@@ -645,11 +706,19 @@
   <body>
     <header>
       <img src="Gazella_Logo.png" alt="Logo Gazella" />
-      <nav>
-        <a href="#produits">Produits</a>
-        <a href="#professionals">Professionnels</a> <!-- Nouveau lien -->
-        <a href="#find-us">Nos points de vente</a> <!-- Nouveau lien -->
-        <a href="#contact">Contact</a>
+      
+      <!-- Bouton Hamburger -->
+      <div class="hamburger" onclick="toggleMenu()">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+
+      <nav id="navbar">
+        <a href="#produits" onclick="closeMenu()">Produits</a>
+        <a href="#professionals" onclick="closeMenu()">Professionnels</a>
+        <a href="#find-us" onclick="closeMenu()">Nos points de vente</a>
+        <a href="#contact" onclick="closeMenu()">Contact</a>
       </nav>
     </header>
 
@@ -683,8 +752,6 @@
       </p>
       <div class="professional-buttons">
         <a href="#contact">Contactez-nous pour une distribution</a>
-        <!-- Vous pouvez ajouter un lien vers un PDF ou une page "Tarifs Pros" ici si elle existe -->
-        <!-- <a href="tarifs-professionnels.pdf" target="_blank">Nos Tarifs Professionnels</a> -->
       </div>
     </section>
 
@@ -1036,11 +1103,6 @@
         // NOUVEAU: Gérer le clic sur l'icône du panier
         document.getElementById("cart-icon").addEventListener("click", () => {
             document.getElementById("contact").scrollIntoView({ behavior: "smooth" });
-            // Optionnel: Mettre en évidence la zone de commande si nécessaire
-            // document.getElementById("orderForm").style.border = "2px solid var(--peche)";
-            // setTimeout(() => {
-            //     document.getElementById("orderForm").style.border = "none";
-            // }, 2000);
         });
 
         // Écouteurs d'événements pour les champs de nom, contact, allergies, méthode, date et HEURE
@@ -1101,6 +1163,23 @@
         });
         // --- FIN DU NOUVEAU CODE POUR L'ENVOI DU FORMULAIRE ---
       });
+
+      // --- SCRIPT DU MENU HAMBURGER ---
+      function toggleMenu() {
+        const nav = document.getElementById("navbar");
+        const hamburger = document.querySelector(".hamburger");
+        nav.classList.toggle("active");
+        hamburger.classList.toggle("active");
+      }
+
+      function closeMenu() {
+        const nav = document.getElementById("navbar");
+        const hamburger = document.querySelector(".hamburger");
+        if (nav.classList.contains("active")) {
+            nav.classList.remove("active");
+            hamburger.classList.remove("active");
+        }
+      }
     </script>
 
     <section id="contact" class="contact">
@@ -1186,7 +1265,7 @@
     </section>
 
     <!-- FOOTER AVEC MENTION GRANBY -->
-    <footer>© 2025 Gazella — Fait avec amour à Granby 🍰</footer>
+    <footer>© 2025 Gazella — Fait avec amour à Granby, Québec 🍰</footer>
 
     <!-- Icône de panier flottante -->
     <div id="cart-icon" class="cart-icon">
@@ -1194,4 +1273,3 @@
     </div>
   </body>
 </html>
-
