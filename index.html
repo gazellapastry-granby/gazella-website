@@ -707,7 +707,6 @@
     <header>
       <img src="Gazella_Logo.png" alt="Logo Gazella" />
       
-      <!-- Bouton Hamburger -->
       <div class="hamburger" onclick="toggleMenu()">
         <span class="bar"></span>
         <span class="bar"></span>
@@ -717,7 +716,6 @@
       <nav id="navbar">
         <a href="#produits" onclick="closeMenu()">Produits</a>
         <a href="#professionals" onclick="closeMenu()">Professionnels</a>
-        <a href="#find-us" onclick="closeMenu()">Nos points de vente</a>
         <a href="#contact" onclick="closeMenu()">Contact</a>
       </nav>
     </header>
@@ -739,11 +737,9 @@
     <section id="produits" class="products">
       <h3>Nos gourmandises</h3>
       <div id="product-grid" class="product-grid">
-        <!-- Products will be loaded here dynamically -->
-      </div>
+        </div>
     </section>
 
-    <!-- NOUVELLE SECTION POUR LES PROFESSIONNELS -->
     <section id="professionals" class="professionals">
       <h3>Vous êtes un professionnel ?</h3>
       <p>
@@ -753,32 +749,6 @@
       <div class="professional-buttons">
         <a href="#contact">Contactez-nous pour une distribution</a>
       </div>
-    </section>
-
-    <!-- NOUVELLE SECTION POUR LES POINTS DE VENTE -->
-    <section id="find-us" class="find-us">
-      <h3>Trouvez nos produits près de chez vous</h3>
-      <p>
-        Découvrez où vous pouvez retrouver les délices Gazella chez nos partenaires locaux.
-      </p>
-      <ul class="location-list">
-        <li>
-          <span>Le marché Granby</span>
-          <a href="https://www.google.ca/maps/place/Le+march%C3%A9+Granby/@45.3983625,-72.7226518,17z/data=!4m6!3m5!1s0x4cc9cf280f71b8fd:0xbd2d333f9a0c182a!8m2!3d45.3982162!4d-72.7227657!16s%2Fg%2F11w_dh9zkw?hl=fr&entry=ttu&g_ep=EgoyMDI1MTExMC4wIKXMDSoASAFQAw%3D%3D" target="_blank">Voir sur la carte</a>
-        </li>
-        <li>
-          <span>Café Douce Heure</span>
-          <a href="https://maps.app.goo.gl/exemple2" target="_blank">Voir sur la carte</a>
-        </li>
-        <li>
-          <span>Épicerie Fine Gourmande</span>
-          <a href="https://maps.app.goo.gl/exemple3" target="_blank">Voir sur la carte</a>
-        </li>
-        <!-- Ajoutez d'autres points de vente ici -->
-      </ul>
-      <p>
-        *Liste non exhaustive, mise à jour régulièrement.
-      </p>
     </section>
 
     <script>
@@ -1199,7 +1169,6 @@
           placeholder="Déclarez ici vos allergies ou produits à éviter (ex: sans lactose, sans noix...)"
         ></textarea>
 
-        <!-- NOUVEAUX CHAMPS : Méthode de récupération et Date -->
         <div class="form-group">
           <label>Méthode de récupération :</label>
           <div class="radio-group">
@@ -1216,7 +1185,6 @@
             <input type="date" id="delivery-date" name="DateSouhaitee" required>
         </div>
 
-        <!-- NOUVEAU CHAMP : Plage horaire souhaitée -->
         <div class="form-group">
             <label for="delivery-time">Plage horaire souhaitée :</label>
             <select id="delivery-time" name="PlageHoraireSouhaitee" required>
@@ -1230,14 +1198,12 @@
         </div>
 
 
-        <!-- Sélecteur de produit et quantité (peut être masqué ou réutilisé comme un fallback) -->
         <div class="product-selector-group">
           <select id="product-select"></select>
           <input type="number" id="product-quantity" value="1" min="1" />
           <button type="button" id="add-to-order-btn" class="add-product-btn">Ajouter depuis la liste</button>
         </div>
 
-        <!-- Récapitulatif de la commande -->
         <div id="selected-products-summary">
           <p>Aucun produit sélectionné.</p>
         </div>
@@ -1252,33 +1218,20 @@
         <button type="submit">Envoyer le message / la commande</button>
       </form>
 
-      <!-- Conteneur pour les boutons de réseaux sociaux -->
       <div class="social-buttons">
         <a class="whatsapp" href="https://wa.me/15147029219" target="_blank"
           >📱 Commander via WhatsApp</a
         >
-        <!-- Nouveau bouton Instagram -->
         <a class="instagram" href="https://www.instagram.com/gazella_sweet/?igsh=MXJ1bGcxb25oMmJ6cw%3D%3D" target="_blank"
           >📸 Suivez-nous sur Instagram</a
         >
       </div>
     </section>
 
-    <!-- FOOTER AVEC MENTION GRANBY -->
     <footer>© 2025 Gazella — Fait avec amour à Granby, Québec 🍰</footer>
 
-    <!-- Icône de panier flottante -->
     <div id="cart-icon" class="cart-icon">
         🛒<span id="cart-count" class="cart-count">0</span>
     </div>
   </body>
 </html>
-
-
-
-
-
-
-
-
-
